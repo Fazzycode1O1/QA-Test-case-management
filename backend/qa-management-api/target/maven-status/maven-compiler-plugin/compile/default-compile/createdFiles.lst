@@ -1,11 +1,15 @@
 com\qams\dto\request\ModuleUpdateRequest.class
+com\qams\dto\request\TestSuiteCreateRequest.class
 com\qams\dto\request\DefectUpdateRequest.class
 com\qams\security\package-info.class
+com\qams\service\TestSuiteService.class
 com\qams\service\DashboardService.class
 com\qams\enums\TestPriority.class
+com\qams\controller\TestPlanController.class
 com\qams\entity\TestCase.class
 com\qams\dto\request\DefectStatusUpdateRequest.class
 com\qams\controller\ModuleController.class
+com\qams\dto\request\TestPlanCreateRequest.class
 com\qams\service\DefectService.class
 com\qams\exception\ResourceNotFoundException.class
 com\qams\util\package-info.class
@@ -22,9 +26,11 @@ com\qams\dto\response\DashboardSummaryResponse.class
 com\qams\controller\TestExecutionController.class
 com\qams\exception\package-info.class
 com\qams\dto\response\ModuleResponse.class
+com\qams\service\TestPlanService.class
 com\qams\service\TestCaseService.class
 com\qams\dto\response\package-info.class
 com\qams\exception\BadRequestException.class
+com\qams\dto\request\TestPlanUpdateRequest.class
 com\qams\repository\TestPlanRepository.class
 com\qams\enums\DefectStatus.class
 com\qams\enums\DefectSeverity.class
@@ -32,9 +38,11 @@ com\qams\dto\request\TestExecutionCreateRequest.class
 com\qams\controller\DashboardController.class
 com\qams\dto\response\ErrorResponse.class
 com\qams\service\TestExecutionService.class
+com\qams\dto\response\TestSuiteResponse.class
 com\qams\dto\response\TestCaseResponse.class
 com\qams\dto\request\ProjectUpdateRequest.class
 com\qams\dto\request\package-info.class
+com\qams\dto\response\TestPlanResponse.class
 com\qams\entity\Notification.class
 com\qams\controller\TestCaseController.class
 com\qams\enums\package-info.class
@@ -54,6 +62,7 @@ com\qams\enums\UserRole.class
 com\qams\entity\package-info.class
 com\qams\dto\request\TestExecutionUpdateRequest.class
 com\qams\entity\TestSuite.class
+com\qams\dto\request\TestSuiteUpdateRequest.class
 com\qams\entity\TestPlan.class
 com\qams\entity\Defect.class
 com\qams\controller\DefectController.class
@@ -62,6 +71,7 @@ com\qams\entity\Project.class
 com\qams\repository\ModuleRepository.class
 com\qams\entity\User.class
 com\qams\service\ModuleService.class
+com\qams\controller\TestSuiteController.class
 com\qams\repository\TestCaseRepository.class
 com\qams\controller\ProjectController.class
 com\qams\entity\TestCaseVersion.class
