@@ -5,7 +5,7 @@ backend/qa-management-api/target/
 # Java
 *.class
 
-# IDE files
+# IDE
 .vscode/
 .idea/
 *.iml
@@ -13,9 +13,9 @@ backend/qa-management-api/target/
 # Logs
 *.log
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-# Environment files
+# Environment
 .env

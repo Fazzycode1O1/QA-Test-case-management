@@ -39,7 +39,7 @@ public class TestExecution {
     private TestCase testCase;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "test_plan_id", nullable = false)
+    @JoinColumn(name = "test_plan_id")
     private TestPlan testPlan;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -77,4 +77,3 @@ public class TestExecution {
         updatedAt = LocalDateTime.now();
     }
 }
-

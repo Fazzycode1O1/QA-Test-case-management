@@ -236,23 +236,170 @@ Example error response:
 
 ## Execution Endpoints
 
+The following endpoints are implemented in Phase 5.
+
 ```text
-GET   /api/v1/test-plans/{planId}/executions
-POST  /api/v1/test-plans/{planId}/executions
-GET   /api/v1/executions/{id}
-PATCH /api/v1/executions/{id}/result
-POST  /api/v1/executions/{id}/defects
+POST   /api/test-executions
+GET    /api/test-executions
+GET    /api/test-executions/{id}
+GET    /api/test-executions/test-case/{testCaseId}
+PUT    /api/test-executions/{id}/status
+DELETE /api/test-executions/{id}
+```
+
+### Create Test Execution
+
+```text
+POST /api/test-executions
+```
+
+Request body:
+
+```json
+{
+  "testCaseId": 1,
+  "testPlanId": 1,
+  "executedByUserId": 2,
+  "status": "FAILED",
+  "actualResult": "Login returned an invalid credentials message.",
+  "notes": "Issue appears only for active user accounts."
+}
+```
+
+Validation rules:
+
+- `testCaseId` is required and must refer to an existing test case.
+- `testPlanId` is optional.
+- `executedByUserId` is optional.
+- `status` is required and must be one of `PENDING`, `PASSED`, `FAILED`, or `BLOCKED`.
+- `actualResult` and `notes` are optional.
+
+### Update Test Execution Status
+
+```text
+PUT /api/test-executions/{id}/status
+```
+
+Request body:
+
+```json
+{
+  "status": "PASSED",
+  "executedByUserId": 2,
+  "actualResult": "Login completed successfully.",
+  "notes": "Retested after fix."
+}
+```
+
+### Test Execution Response
+
+```json
+{
+  "id": 1,
+  "testCaseId": 1,
+  "testCaseTitle": "Verify user login with valid credentials",
+  "testPlanId": 1,
+  "testPlanName": "Sprint 1 Regression",
+  "executedByUserId": 2,
+  "executedByUserName": "QA Tester",
+  "status": "FAILED",
+  "actualResult": "Login returned an invalid credentials message.",
+  "notes": "Issue appears only for active user accounts.",
+  "executedAt": "2026-04-30T23:50:00",
+  "defectId": 1,
+  "createdAt": "2026-04-30T23:50:00",
+  "updatedAt": "2026-04-30T23:50:00"
+}
 ```
 
 ## Defect Endpoints
 
+The following endpoints are implemented in Phase 5.
+
 ```text
-GET   /api/v1/defects
-GET   /api/v1/defects/{id}
-POST  /api/v1/defects
-PUT   /api/v1/defects/{id}
-PATCH /api/v1/defects/{id}/status
-PATCH /api/v1/defects/{id}/assignment
+POST   /api/defects
+GET    /api/defects
+GET    /api/defects/{id}
+GET    /api/defects/project/{projectId}
+PUT    /api/defects/{id}
+PUT    /api/defects/{id}/status
+DELETE /api/defects/{id}
+```
+
+### Create Defect
+
+```text
+POST /api/defects
+```
+
+Request body:
+
+```json
+{
+  "title": "Login fails for active user",
+  "description": "Valid user cannot log in with correct credentials.",
+  "severity": "HIGH",
+  "priority": "HIGH",
+  "status": "OPEN",
+  "testExecutionId": 1,
+  "projectId": 1,
+  "reportedByUserId": 2,
+  "assignedToUserId": 3
+}
+```
+
+Validation rules:
+
+- `title` is required.
+- `severity` is required and must be one of `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL`.
+- `status` is optional on create and defaults to `OPEN`.
+- `priority` is optional and defaults to `MEDIUM`.
+- `testExecutionId` is optional, but when provided it must refer to a failed test execution.
+- `projectId` is required and must refer to an existing project.
+- `reportedByUserId` and `assignedToUserId` are optional.
+
+### Update Defect
+
+```text
+PUT /api/defects/{id}
+```
+
+Uses the same request body as create, but `status` is required for full updates.
+
+### Update Defect Status
+
+```text
+PUT /api/defects/{id}/status
+```
+
+Request body:
+
+```json
+{
+  "status": "IN_PROGRESS"
+}
+```
+
+### Defect Response
+
+```json
+{
+  "id": 1,
+  "title": "Login fails for active user",
+  "description": "Valid user cannot log in with correct credentials.",
+  "severity": "HIGH",
+  "priority": "HIGH",
+  "status": "OPEN",
+  "testExecutionId": 1,
+  "projectId": 1,
+  "projectName": "QA Management System",
+  "reportedByUserId": 2,
+  "reportedByUserName": "QA Tester",
+  "assignedToUserId": 3,
+  "assignedToUserName": "Developer",
+  "createdAt": "2026-04-30T23:50:00",
+  "updatedAt": "2026-04-30T23:50:00"
+}
 ```
 
 ## Dashboard Endpoints
