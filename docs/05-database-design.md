@@ -1,29 +1,52 @@
 # Database Design
 
-## Initial Entities
+## Implemented Core Model
 
-The first database model will focus on the core QA management workflow.
+Phase 2 implements the first JPA database model for the QA Management System. The model focuses on users, projects, modules, test cases, test suites, test plans, executions, defects, test case history, and notifications.
+
+All entities use:
+
+- `Long id`
+- `@GeneratedValue(strategy = GenerationType.IDENTITY)`
+- `jakarta.persistence` annotations
+- Lombok getters, setters, no-args constructors, and all-args constructors
+- `createdAt` and `updatedAt` fields where they are useful
+- `@Enumerated(EnumType.STRING)` for enum fields
+
+## Entities
 
 ### User
 
-Represents a system user such as an admin, tester, or developer.
+Table: `users`
 
-Planned fields:
+Represents an application user.
+
+Key fields:
 
 - `id`
 - `name`
 - `email`
 - `password`
 - `role`
-- `status`
+- `active`
 - `createdAt`
 - `updatedAt`
+
+Relationships:
+
+- One `User` can create many `TestCase` records.
+- One `User` can execute many `TestExecution` records.
+- One `User` can report many `Defect` records.
+- One `User` can be assigned many `Defect` records.
+- One `User` can receive many `Notification` records.
 
 ### Project
 
+Table: `projects`
+
 Represents a software project being tested.
 
-Planned fields:
+Key fields:
 
 - `id`
 - `name`
@@ -32,27 +55,41 @@ Planned fields:
 - `createdAt`
 - `updatedAt`
 
+Relationships:
+
+- One `Project` has many `Module` records.
+- One `Project` has many `TestSuite` records.
+- One `Project` has many `TestPlan` records.
+- One `Project` has many `Defect` records.
+
 ### Module
+
+Table: `modules`
 
 Represents a functional area inside a project.
 
-Planned fields:
+Key fields:
 
 - `id`
-- `projectId`
 - `name`
 - `description`
 - `createdAt`
 - `updatedAt`
 
+Relationships:
+
+- Many `Module` records belong to one `Project`.
+- One `Module` has many `TestCase` records.
+
 ### TestCase
+
+Table: `test_cases`
 
 Represents a reusable test case.
 
-Planned fields:
+Key fields:
 
 - `id`
-- `moduleId`
 - `title`
 - `description`
 - `preconditions`
@@ -60,31 +97,50 @@ Planned fields:
 - `expectedResult`
 - `priority`
 - `status`
-- `createdBy`
 - `createdAt`
 - `updatedAt`
 
+Relationships:
+
+- Many `TestCase` records belong to one `Module`.
+- Many `TestCase` records can be created by one `User`.
+- One `TestCase` has many `TestExecution` records.
+- One `TestCase` has many `TestCaseVersion` records.
+- Many `TestCase` records can belong to many `TestSuite` records.
+
 ### TestSuite
 
-Represents a group of test cases.
+Table: `test_suites`
 
-Planned fields:
+Represents a collection of test cases.
+
+Key fields:
 
 - `id`
-- `projectId`
 - `name`
 - `description`
 - `createdAt`
 - `updatedAt`
 
+Relationships:
+
+- Many `TestSuite` records belong to one `Project`.
+- One `TestSuite` can contain many `TestCase` records.
+- Many `TestSuite` records can belong to many `TestPlan` records.
+
+Join table:
+
+- `test_suite_test_cases`
+
 ### TestPlan
 
-Represents a planned testing cycle for a release, sprint, or milestone.
+Table: `test_plans`
 
-Planned fields:
+Represents a testing cycle for a release, sprint, or milestone.
+
+Key fields:
 
 - `id`
-- `projectId`
 - `name`
 - `description`
 - `startDate`
@@ -93,85 +149,154 @@ Planned fields:
 - `createdAt`
 - `updatedAt`
 
+Relationships:
+
+- Many `TestPlan` records belong to one `Project`.
+- One `TestPlan` can contain many `TestSuite` records.
+- One `TestPlan` has many `TestExecution` records.
+
+Join table:
+
+- `test_plan_test_suites`
+
 ### TestExecution
 
-Represents the execution result of a test case within a test plan.
+Table: `test_executions`
 
-Planned fields:
+Represents the result of executing a test case inside a test plan.
+
+Key fields:
 
 - `id`
-- `testPlanId`
-- `testCaseId`
-- `executedBy`
 - `status`
 - `actualResult`
-- `executedAt`
 - `notes`
+- `executedAt`
+- `createdAt`
+- `updatedAt`
+
+Relationships:
+
+- Many `TestExecution` records belong to one `TestCase`.
+- Many `TestExecution` records belong to one `TestPlan`.
+- Many `TestExecution` records can be executed by one `User`.
+- One `TestExecution` may have one `Defect`.
 
 ### Defect
 
+Table: `defects`
+
 Represents a bug or issue found during testing.
 
-Planned fields:
+Key fields:
 
 - `id`
-- `projectId`
-- `testExecutionId`
 - `title`
 - `description`
 - `severity`
 - `priority`
 - `status`
-- `reportedBy`
-- `assignedTo`
 - `createdAt`
 - `updatedAt`
 
+Relationships:
+
+- One `Defect` may belong to one `TestExecution`.
+- Many `Defect` records can belong to one `Project`.
+- Many `Defect` records can be reported by one `User`.
+- Many `Defect` records can be assigned to one `User`.
+
 ### TestCaseVersion
 
-Represents historical versions of a test case.
+Table: `test_case_versions`
 
-Planned fields:
+Represents a historical snapshot of a test case.
+
+Key fields:
 
 - `id`
-- `testCaseId`
 - `versionNumber`
 - `snapshotData`
-- `updatedBy`
 - `createdAt`
+
+Relationships:
+
+- Many `TestCaseVersion` records belong to one `TestCase`.
+- Many `TestCaseVersion` records can be updated by one `User`.
 
 ### Notification
 
-Represents system notifications for users.
+Table: `notifications`
 
-Planned fields:
+Represents a notification sent to a user.
+
+Key fields:
 
 - `id`
-- `userId`
 - `title`
 - `message`
 - `read`
 - `createdAt`
+- `updatedAt`
 
-## Entity Relationships
+Relationships:
 
-- One `Project` has many `Module` records.
-- One `Module` has many `TestCase` records.
-- One `Project` has many `TestSuite` records.
-- One `TestSuite` can contain many `TestCase` records.
-- One `Project` has many `TestPlan` records.
-- One `TestPlan` has many `TestExecution` records.
-- One `TestCase` has many `TestExecution` records.
-- One failed `TestExecution` can create one or more `Defect` records.
-- One `TestCase` has many `TestCaseVersion` records.
-- One `User` can create many test cases, execute many tests, report defects, and receive notifications.
-- One `User` can be assigned many defects.
+- Many `Notification` records belong to one `User`.
+
+## Enums
+
+### UserRole
+
+- `ADMIN`
+- `TESTER`
+- `DEVELOPER`
+
+### TestPriority
+
+- `LOW`
+- `MEDIUM`
+- `HIGH`
+- `CRITICAL`
+
+### TestStatus
+
+- `PENDING`
+- `PASSED`
+- `FAILED`
+- `BLOCKED`
+
+### DefectSeverity
+
+- `LOW`
+- `MEDIUM`
+- `HIGH`
+- `CRITICAL`
+
+### DefectStatus
+
+- `OPEN`
+- `IN_PROGRESS`
+- `RESOLVED`
+- `CLOSED`
+
+## Repository Layer
+
+Each entity has a matching Spring Data JPA repository:
+
+- `UserRepository`
+- `ProjectRepository`
+- `ModuleRepository`
+- `TestCaseRepository`
+- `TestSuiteRepository`
+- `TestPlanRepository`
+- `TestExecutionRepository`
+- `DefectRepository`
+- `TestCaseVersionRepository`
+- `NotificationRepository`
 
 ## Future ERD Placeholder
 
-An ERD will be added after the first set of JPA entities is finalized.
-
-Placeholder:
+An ERD will be added after the first database migration strategy is selected.
 
 ```text
 [Future ERD Diagram]
