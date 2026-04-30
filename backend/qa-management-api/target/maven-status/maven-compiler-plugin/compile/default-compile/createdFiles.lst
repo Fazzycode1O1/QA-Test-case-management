@@ -1,0 +1,12 @@
+com\qams\repository\package-info.class
+com\qams\entity\package-info.class
+com\qams\util\package-info.class
+com\qams\QaManagementApiApplication.class
+com\qams\security\package-info.class
+com\qams\dto\request\package-info.class
+com\qams\config\package-info.class
+com\qams\enums\package-info.class
+com\qams\exception\package-info.class
+com\qams\dto\response\package-info.class
+com\qams\service\package-info.class
+com\qams\controller\package-info.class
