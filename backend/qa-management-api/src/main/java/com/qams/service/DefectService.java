@@ -32,6 +32,7 @@ public class DefectService {
     private final ProjectRepository projectRepository;
     private final TestExecutionRepository testExecutionRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public DefectResponse createDefect(DefectCreateRequest request) {
@@ -52,6 +53,8 @@ public class DefectService {
         defect.setAssignedTo(assignedTo);
 
         Defect savedDefect = defectRepository.save(defect);
+        createDefectCreatedNotification(savedDefect);
+
         return mapToResponse(savedDefect);
     }
 
@@ -179,6 +182,17 @@ public class DefectService {
 
     private DefectStatus getStatusOrDefault(DefectStatus status) {
         return status != null ? status : DefectStatus.OPEN;
+    }
+
+    private void createDefectCreatedNotification(Defect defect) {
+        User recipient = defect.getAssignedTo() != null ? defect.getAssignedTo() : defect.getReportedBy();
+
+        if (recipient == null) {
+            return;
+        }
+
+        String message = "Defect #" + defect.getId() + " was created: " + defect.getTitle();
+        notificationService.createNotification(recipient, "New defect created", message);
     }
 
     private boolean matchesKeyword(Defect defect, String keyword) {

@@ -12,8 +12,10 @@ import com.qams.exception.ResourceNotFoundException;
 import com.qams.repository.ModuleRepository;
 import com.qams.repository.TestCaseRepository;
 import com.qams.repository.UserRepository;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ public class TestCaseService {
     private final TestCaseRepository testCaseRepository;
     private final ModuleRepository moduleRepository;
     private final UserRepository userRepository;
+    private final TestCaseVersionService testCaseVersionService;
 
     @Transactional
     public TestCaseResponse createTestCase(TestCaseCreateRequest request) {
@@ -81,6 +84,7 @@ public class TestCaseService {
         TestCase testCase = getTestCaseEntityById(id);
         Module module = getModuleById(request.getModuleId());
         User createdBy = getUserById(request.getCreatedByUserId());
+        Map<String, Object> oldValues = buildVersionValues(testCase);
 
         testCase.setTitle(request.getTitle());
         testCase.setDescription(request.getDescription());
@@ -92,6 +96,9 @@ public class TestCaseService {
         testCase.setCreatedBy(createdBy);
 
         TestCase updatedTestCase = testCaseRepository.save(testCase);
+        Map<String, Object> newValues = buildVersionValues(updatedTestCase);
+        testCaseVersionService.createVersion(updatedTestCase, oldValues, newValues, createdBy);
+
         return mapToResponse(updatedTestCase);
     }
 
@@ -135,6 +142,19 @@ public class TestCaseService {
 
     private boolean hasModuleId(TestCase testCase, Long moduleId) {
         return testCase.getModule() != null && testCase.getModule().getId().equals(moduleId);
+    }
+
+    private Map<String, Object> buildVersionValues(TestCase testCase) {
+        Map<String, Object> values = new LinkedHashMap<>();
+        values.put("title", testCase.getTitle());
+        values.put("description", testCase.getDescription());
+        values.put("steps", testCase.getSteps());
+        values.put("expectedResult", testCase.getExpectedResult());
+        values.put("priority", testCase.getPriority());
+        values.put("moduleId", testCase.getModule() != null ? testCase.getModule().getId() : null);
+        values.put("createdByUserId", testCase.getCreatedBy() != null ? testCase.getCreatedBy().getId() : null);
+
+        return values;
     }
 
     private TestCaseResponse mapToResponse(TestCase testCase) {

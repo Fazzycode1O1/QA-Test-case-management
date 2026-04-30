@@ -28,6 +28,7 @@ public class TestExecutionService {
     private final TestCaseRepository testCaseRepository;
     private final TestPlanRepository testPlanRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public TestExecutionResponse createTestExecution(TestExecutionCreateRequest request) {
@@ -48,6 +49,11 @@ public class TestExecutionService {
         }
 
         TestExecution savedExecution = testExecutionRepository.save(testExecution);
+
+        if (savedExecution.getStatus() == TestStatus.FAILED) {
+            createFailedExecutionNotification(savedExecution);
+        }
+
         return mapToResponse(savedExecution);
     }
 
@@ -79,6 +85,7 @@ public class TestExecutionService {
     public TestExecutionResponse updateTestExecutionStatus(Long id, TestExecutionUpdateRequest request) {
         TestExecution testExecution = getTestExecutionEntityById(id);
         User executedBy = getOptionalUserById(request.getExecutedByUserId());
+        TestStatus previousStatus = testExecution.getStatus();
 
         testExecution.setStatus(request.getStatus());
         testExecution.setExecutedBy(executedBy);
@@ -90,6 +97,11 @@ public class TestExecutionService {
         }
 
         TestExecution updatedExecution = testExecutionRepository.save(testExecution);
+
+        if (updatedExecution.getStatus() == TestStatus.FAILED && previousStatus != TestStatus.FAILED) {
+            createFailedExecutionNotification(updatedExecution);
+        }
+
         return mapToResponse(updatedExecution);
     }
 
@@ -127,6 +139,25 @@ public class TestExecutionService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
+    private void createFailedExecutionNotification(TestExecution testExecution) {
+        TestCase testCase = testExecution.getTestCase();
+        User recipient = testExecution.getExecutedBy();
+
+        if (recipient == null && testCase != null) {
+            recipient = testCase.getCreatedBy();
+        }
+
+        if (recipient == null) {
+            return;
+        }
+
+        String testCaseTitle = testCase != null ? testCase.getTitle() : "A test case";
+        String message = "Test execution #" + testExecution.getId()
+                + " for \"" + testCaseTitle + "\" was marked FAILED.";
+
+        notificationService.createNotification(recipient, "Test execution failed", message);
+    }
+
     private TestExecutionResponse mapToResponse(TestExecution testExecution) {
         TestCase testCase = testExecution.getTestCase();
         TestPlan testPlan = testExecution.getTestPlan();
@@ -151,4 +182,3 @@ public class TestExecutionService {
         );
     }
 }
-

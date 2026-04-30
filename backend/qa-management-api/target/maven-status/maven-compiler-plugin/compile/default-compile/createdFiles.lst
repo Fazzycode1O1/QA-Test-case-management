@@ -5,8 +5,10 @@ com\qams\security\package-info.class
 com\qams\service\TestSuiteService.class
 com\qams\service\DashboardService.class
 com\qams\enums\TestPriority.class
+com\qams\controller\TestCaseVersionController.class
 com\qams\controller\TestPlanController.class
 com\qams\entity\TestCase.class
+com\qams\service\TestCaseVersionService.class
 com\qams\dto\request\DefectStatusUpdateRequest.class
 com\qams\controller\ModuleController.class
 com\qams\dto\request\TestPlanCreateRequest.class
@@ -33,9 +35,11 @@ com\qams\exception\BadRequestException.class
 com\qams\dto\request\TestPlanUpdateRequest.class
 com\qams\repository\TestPlanRepository.class
 com\qams\enums\DefectStatus.class
+com\qams\controller\NotificationController.class
 com\qams\enums\DefectSeverity.class
 com\qams\dto\request\TestExecutionCreateRequest.class
 com\qams\controller\DashboardController.class
+com\qams\service\NotificationService.class
 com\qams\dto\response\ErrorResponse.class
 com\qams\service\TestExecutionService.class
 com\qams\dto\response\TestSuiteResponse.class
@@ -56,6 +60,7 @@ com\qams\dto\request\ModuleCreateRequest.class
 com\qams\dto\response\ProjectResponse.class
 com\qams\dto\request\TestCaseCreateRequest.class
 com\qams\dto\request\TestCaseUpdateRequest.class
+com\qams\dto\response\NotificationResponse.class
 com\qams\dto\request\ProjectCreateRequest.class
 com\qams\repository\package-info.class
 com\qams\enums\UserRole.class
@@ -66,6 +71,7 @@ com\qams\dto\request\TestSuiteUpdateRequest.class
 com\qams\entity\TestPlan.class
 com\qams\entity\Defect.class
 com\qams\controller\DefectController.class
+com\qams\dto\response\TestCaseVersionResponse.class
 com\qams\dto\response\DefectResponse.class
 com\qams\entity\Project.class
 com\qams\repository\ModuleRepository.class
