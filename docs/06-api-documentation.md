@@ -24,6 +24,126 @@ POST /api/v1/auth/logout
 GET  /api/v1/auth/me
 ```
 
+## Project Endpoints
+
+The following endpoints are implemented in Phase 4.
+
+```text
+POST   /api/projects
+GET    /api/projects
+GET    /api/projects/{id}
+PUT    /api/projects/{id}
+DELETE /api/projects/{id}
+```
+
+### Create Project
+
+```text
+POST /api/projects
+```
+
+Request body:
+
+```json
+{
+  "name": "QA Management System",
+  "description": "Internal QA tracking platform.",
+  "status": "ACTIVE"
+}
+```
+
+Validation rules:
+
+- `name` is required.
+- `description` is optional.
+- `status` is optional and defaults to `ACTIVE` when empty.
+
+### Update Project
+
+```text
+PUT /api/projects/{id}
+```
+
+Uses the same request body and validation rules as create.
+
+### Project Response
+
+```json
+{
+  "id": 1,
+  "name": "QA Management System",
+  "description": "Internal QA tracking platform.",
+  "status": "ACTIVE",
+  "createdAt": "2026-04-30T23:30:00",
+  "updatedAt": "2026-04-30T23:30:00"
+}
+```
+
+## Module Endpoints
+
+The following endpoints are implemented in Phase 4.
+
+```text
+POST   /api/modules
+GET    /api/modules
+GET    /api/modules/{id}
+GET    /api/modules/project/{projectId}
+PUT    /api/modules/{id}
+DELETE /api/modules/{id}
+```
+
+### Create Module
+
+```text
+POST /api/modules
+```
+
+Request body:
+
+```json
+{
+  "name": "Authentication",
+  "description": "Login, registration, and account access features.",
+  "projectId": 1
+}
+```
+
+Validation rules:
+
+- `name` is required.
+- `description` is optional.
+- `projectId` is required and must refer to an existing project.
+
+### Update Module
+
+```text
+PUT /api/modules/{id}
+```
+
+Uses the same request body and validation rules as create.
+
+### Get Modules by Project
+
+```text
+GET /api/modules/project/{projectId}
+```
+
+Returns all modules that belong to the given project.
+
+### Module Response
+
+```json
+{
+  "id": 1,
+  "name": "Authentication",
+  "description": "Login, registration, and account access features.",
+  "projectId": 1,
+  "projectName": "QA Management System",
+  "createdAt": "2026-04-30T23:30:00",
+  "updatedAt": "2026-04-30T23:30:00"
+}
+```
+
 ## Test Case Endpoints
 
 The following endpoints are implemented in Phase 3.
@@ -99,7 +219,7 @@ Uses the same request body and validation rules as create.
 
 Validation errors return `400 Bad Request`.
 
-Missing test cases, modules, or users return `404 Not Found`.
+Missing projects, modules, test cases, or users return `404 Not Found`.
 
 Example error response:
 

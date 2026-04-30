@@ -1,8 +1,11 @@
-# Java / Maven
+# Maven build output
 target/
+backend/qa-management-api/target/
+
+# Java
 *.class
 
-# IDE
+# IDE files
 .vscode/
 .idea/
 *.iml
@@ -10,9 +13,9 @@ target/
 # Logs
 *.log
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
 
-# Environment
+# Environment files
 .env
