@@ -1,34 +1,78 @@
 # Security Design
 
-## JWT Authentication Plan
+## JWT Authentication
 
-JWT authentication is planned but not implemented yet.
+JWT authentication is implemented in Phase 10 using Spring Security and a stateless bearer-token flow.
 
-Future authentication flow:
+Authentication flow:
 
 1. User submits email and password to the login endpoint.
 2. Backend validates credentials.
-3. Backend returns an access token and optionally a refresh token.
+3. Backend returns a JWT access token.
 4. Client sends the access token in the `Authorization` header.
 5. Backend validates the token for protected endpoints.
 6. User role is used to enforce authorization rules.
 
-Example future header:
+Example header:
 
 ```text
 Authorization: Bearer <token>
 ```
 
+The token includes:
+
+- user email as the subject
+- user role
+- issued-at timestamp
+- expiration timestamp
+
+JWT signing uses HMAC SHA-256. The signing secret must be provided through an environment variable:
+
+```text
+QAMS_JWT_SECRET
+```
+
+Optional expiration override:
+
+```text
+QAMS_JWT_EXPIRATION_MS
+```
+
+The default token expiration is 24 hours.
+
+## Auth Endpoints
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+```
+
+### Register
+
+Creates a user with one of these roles:
+
+- `ADMIN`
+- `TESTER`
+- `DEVELOPER`
+
+Passwords are encrypted with BCrypt before storage.
+
+### Login
+
+Authenticates a user with email and password and returns a JWT token.
+
 ## Role-Based Access Control
 
-The system will use role-based access control to restrict sensitive actions.
+The system uses role-based access control to restrict sensitive actions.
 
-Planned access rules:
+Implemented access rules:
 
-- Admin-only access for user management and project configuration.
-- Tester access for test case creation, test execution, and defect reporting.
-- Developer access for viewing and updating assigned defects.
-- Shared read access for project and dashboard information where appropriate.
+- `/api/auth/**` is public.
+- Swagger/OpenAPI paths are public when present.
+- All other endpoints require authentication.
+- Admin-only access is applied to project and module management actions.
+- Tester access is applied to test case, test execution, defect, test suite, and test plan management actions.
+- Developer access is allowed for defect status updates.
 
 ## Roles
 
@@ -52,11 +96,8 @@ Plain text passwords must never be stored or logged.
 
 ## Future Security Tasks
 
-- Add authentication DTOs.
-- Add user entity and role enum.
-- Add password encoder configuration.
-- Add JWT utility service.
-- Add authentication filter.
-- Add security exception handling.
-- Add method-level authorization where needed.
-
+- Add refresh tokens.
+- Add logout/token revocation.
+- Add user management endpoints for admins.
+- Add stricter ownership checks for developer defect visibility.
+- Add OAuth2 or SSO if required later.

@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class TestExecutionController {
     private final TestExecutionService testExecutionService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestExecutionResponse> createTestExecution(
             @Valid @RequestBody TestExecutionCreateRequest request
     ) {
@@ -51,6 +53,7 @@ public class TestExecutionController {
     }
 
     @PutMapping("/{id}/status")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestExecutionResponse> updateTestExecutionStatus(
             @PathVariable Long id,
             @Valid @RequestBody TestExecutionUpdateRequest request
@@ -59,9 +62,9 @@ public class TestExecutionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<Void> deleteTestExecution(@PathVariable Long id) {
         testExecutionService.deleteTestExecution(id);
         return ResponseEntity.noContent().build();
     }
 }
-

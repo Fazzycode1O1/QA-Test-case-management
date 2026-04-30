@@ -1,5 +1,6 @@
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\config\package-info.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\config\SecurityConfig.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\AuthController.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\DashboardController.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\DefectController.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\ModuleController.java
@@ -15,11 +16,13 @@ C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\DefectCreateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\DefectStatusUpdateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\DefectUpdateRequest.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\LoginRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\ModuleCreateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\ModuleUpdateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\package-info.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\ProjectCreateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\ProjectUpdateRequest.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\RegisterRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\TestCaseCreateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\TestCaseUpdateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\TestExecutionCreateRequest.java
@@ -28,6 +31,7 @@ C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\TestPlanUpdateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\TestSuiteCreateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\TestSuiteUpdateRequest.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\AuthResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\DashboardSummaryResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\DefectReportItemResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\DefectReportResponse.java
@@ -79,7 +83,11 @@ C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\repository\TestPlanRepository.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\repository\TestSuiteRepository.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\repository\UserRepository.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\security\CustomUserDetailsService.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\security\JwtAuthenticationFilter.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\security\JwtService.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\security\package-info.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\AuthService.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\DashboardService.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\DefectService.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\ModuleService.java

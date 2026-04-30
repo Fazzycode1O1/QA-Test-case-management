@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class TestPlanController {
     private final TestPlanService testPlanService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestPlanResponse> createTestPlan(
             @Valid @RequestBody TestPlanCreateRequest request
     ) {
@@ -51,6 +53,7 @@ public class TestPlanController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestPlanResponse> updateTestPlan(
             @PathVariable Long id,
             @Valid @RequestBody TestPlanUpdateRequest request
@@ -59,12 +62,14 @@ public class TestPlanController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<Void> deleteTestPlan(@PathVariable Long id) {
         testPlanService.deleteTestPlan(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{planId}/test-suites/{suiteId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestPlanResponse> addTestSuiteToPlan(
             @PathVariable Long planId,
             @PathVariable Long suiteId
@@ -73,6 +78,7 @@ public class TestPlanController {
     }
 
     @DeleteMapping("/{planId}/test-suites/{suiteId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestPlanResponse> removeTestSuiteFromPlan(
             @PathVariable Long planId,
             @PathVariable Long suiteId
@@ -80,4 +86,3 @@ public class TestPlanController {
         return ResponseEntity.ok(testPlanService.removeTestSuiteFromPlan(planId, suiteId));
     }
 }
-

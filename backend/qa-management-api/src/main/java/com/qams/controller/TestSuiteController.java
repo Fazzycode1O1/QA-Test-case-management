@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class TestSuiteController {
     private final TestSuiteService testSuiteService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestSuiteResponse> createTestSuite(
             @Valid @RequestBody TestSuiteCreateRequest request
     ) {
@@ -51,6 +53,7 @@ public class TestSuiteController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestSuiteResponse> updateTestSuite(
             @PathVariable Long id,
             @Valid @RequestBody TestSuiteUpdateRequest request
@@ -59,12 +62,14 @@ public class TestSuiteController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<Void> deleteTestSuite(@PathVariable Long id) {
         testSuiteService.deleteTestSuite(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{suiteId}/test-cases/{testCaseId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestSuiteResponse> addTestCaseToSuite(
             @PathVariable Long suiteId,
             @PathVariable Long testCaseId
@@ -73,6 +78,7 @@ public class TestSuiteController {
     }
 
     @DeleteMapping("/{suiteId}/test-cases/{testCaseId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestSuiteResponse> removeTestCaseFromSuite(
             @PathVariable Long suiteId,
             @PathVariable Long testCaseId
@@ -80,4 +86,3 @@ public class TestSuiteController {
         return ResponseEntity.ok(testSuiteService.removeTestCaseFromSuite(suiteId, testCaseId));
     }
 }
-

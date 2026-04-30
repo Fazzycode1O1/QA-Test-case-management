@@ -12,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class DefectController {
     private final DefectService defectService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<DefectResponse> createDefect(
             @Valid @RequestBody DefectCreateRequest request
     ) {
@@ -63,6 +65,7 @@ public class DefectController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<DefectResponse> updateDefect(
             @PathVariable Long id,
             @Valid @RequestBody DefectUpdateRequest request
@@ -71,6 +74,7 @@ public class DefectController {
     }
 
     @PutMapping("/{id}/status")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER', 'DEVELOPER')")
     public ResponseEntity<DefectResponse> updateDefectStatus(
             @PathVariable Long id,
             @Valid @RequestBody DefectStatusUpdateRequest request
@@ -79,6 +83,7 @@ public class DefectController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<Void> deleteDefect(@PathVariable Long id) {
         defectService.deleteDefect(id);
         return ResponseEntity.noContent().build();

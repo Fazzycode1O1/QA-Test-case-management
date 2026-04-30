@@ -11,6 +11,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class TestCaseController {
     private final TestCaseService testCaseService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestCaseResponse> createTestCase(
             @Valid @RequestBody TestCaseCreateRequest request
     ) {
@@ -57,6 +59,7 @@ public class TestCaseController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<TestCaseResponse> updateTestCase(
             @PathVariable Long id,
             @Valid @RequestBody TestCaseUpdateRequest request
@@ -65,6 +68,7 @@ public class TestCaseController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TESTER')")
     public ResponseEntity<Void> deleteTestCase(@PathVariable Long id) {
         testCaseService.deleteTestCase(id);
         return ResponseEntity.noContent().build();

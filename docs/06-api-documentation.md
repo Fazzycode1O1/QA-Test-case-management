@@ -12,16 +12,76 @@ API responses should use consistent response structures, validation messages, an
 
 Future API versions may use a versioned path such as `/api/v1`.
 
-## Auth Endpoints
-
-JWT is planned for a later phase. These endpoints are listed as the intended API shape only.
+All endpoints except `/api/auth/**` require a JWT bearer token after Phase 10.
 
 ```text
-POST /api/v1/auth/register
-POST /api/v1/auth/login
-POST /api/v1/auth/refresh-token
-POST /api/v1/auth/logout
-GET  /api/v1/auth/me
+Authorization: Bearer <token>
+```
+
+## Auth Endpoints
+
+The following endpoints are implemented in Phase 10.
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+```
+
+### Register
+
+```text
+POST /api/auth/register
+```
+
+Request body:
+
+```json
+{
+  "name": "QA Tester",
+  "email": "tester@example.com",
+  "password": "secret123",
+  "role": "TESTER"
+}
+```
+
+Allowed roles:
+
+- `ADMIN`
+- `TESTER`
+- `DEVELOPER`
+
+### Login
+
+```text
+POST /api/auth/login
+```
+
+Request body:
+
+```json
+{
+  "email": "tester@example.com",
+  "password": "secret123"
+}
+```
+
+### Auth Response
+
+```json
+{
+  "token": "<jwt-token>",
+  "tokenType": "Bearer",
+  "userId": 1,
+  "name": "QA Tester",
+  "email": "tester@example.com",
+  "role": "TESTER"
+}
+```
+
+Use the token in protected API requests:
+
+```text
+Authorization: Bearer <jwt-token>
 ```
 
 ## Project Endpoints
