@@ -4,6 +4,8 @@ import com.qams.dto.request.DefectCreateRequest;
 import com.qams.dto.request.DefectStatusUpdateRequest;
 import com.qams.dto.request.DefectUpdateRequest;
 import com.qams.dto.response.DefectResponse;
+import com.qams.enums.DefectSeverity;
+import com.qams.enums.DefectStatus;
 import com.qams.service.DefectService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,6 +40,16 @@ public class DefectController {
     @GetMapping
     public ResponseEntity<List<DefectResponse>> getAllDefects() {
         return ResponseEntity.ok(defectService.getAllDefects());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<DefectResponse>> searchDefects(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) DefectSeverity severity,
+            @RequestParam(required = false) DefectStatus status,
+            @RequestParam(required = false) Long projectId
+    ) {
+        return ResponseEntity.ok(defectService.searchDefects(keyword, severity, status, projectId));
     }
 
     @GetMapping("/{id}")
@@ -71,4 +84,3 @@ public class DefectController {
         return ResponseEntity.noContent().build();
     }
 }
-

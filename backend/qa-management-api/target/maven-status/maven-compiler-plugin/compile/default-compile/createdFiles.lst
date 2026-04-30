@@ -1,6 +1,7 @@
 com\qams\dto\request\ModuleUpdateRequest.class
 com\qams\dto\request\DefectUpdateRequest.class
 com\qams\security\package-info.class
+com\qams\service\DashboardService.class
 com\qams\enums\TestPriority.class
 com\qams\entity\TestCase.class
 com\qams\dto\request\DefectStatusUpdateRequest.class
@@ -17,6 +18,7 @@ com\qams\dto\response\TestExecutionResponse.class
 com\qams\config\package-info.class
 com\qams\entity\TestExecution.class
 com\qams\service\ProjectService.class
+com\qams\dto\response\DashboardSummaryResponse.class
 com\qams\controller\TestExecutionController.class
 com\qams\exception\package-info.class
 com\qams\dto\response\ModuleResponse.class
@@ -27,6 +29,7 @@ com\qams\repository\TestPlanRepository.class
 com\qams\enums\DefectStatus.class
 com\qams\enums\DefectSeverity.class
 com\qams\dto\request\TestExecutionCreateRequest.class
+com\qams\controller\DashboardController.class
 com\qams\dto\response\ErrorResponse.class
 com\qams\service\TestExecutionService.class
 com\qams\dto\response\TestCaseResponse.class

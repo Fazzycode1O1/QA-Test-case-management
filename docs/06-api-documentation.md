@@ -151,6 +151,7 @@ The following endpoints are implemented in Phase 3.
 ```text
 POST   /api/test-cases
 GET    /api/test-cases
+GET    /api/test-cases/search
 GET    /api/test-cases/{id}
 PUT    /api/test-cases/{id}
 DELETE /api/test-cases/{id}
@@ -193,6 +194,25 @@ PUT /api/test-cases/{id}
 ```
 
 Uses the same request body and validation rules as create.
+
+### Search Test Cases
+
+```text
+GET /api/test-cases/search
+```
+
+Optional query parameters:
+
+- `keyword`: searches title, description, steps, and expected result.
+- `priority`: filters by `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL`.
+- `status`: filters by `PENDING`, `PASSED`, `FAILED`, or `BLOCKED`.
+- `moduleId`: filters by module.
+
+Example:
+
+```text
+GET /api/test-cases/search?keyword=login&priority=HIGH&status=PENDING&moduleId=1
+```
 
 ### Test Case Response
 
@@ -319,6 +339,7 @@ The following endpoints are implemented in Phase 5.
 ```text
 POST   /api/defects
 GET    /api/defects
+GET    /api/defects/search
 GET    /api/defects/{id}
 GET    /api/defects/project/{projectId}
 PUT    /api/defects/{id}
@@ -366,6 +387,25 @@ PUT /api/defects/{id}
 
 Uses the same request body as create, but `status` is required for full updates.
 
+### Search Defects
+
+```text
+GET /api/defects/search
+```
+
+Optional query parameters:
+
+- `keyword`: searches title and description.
+- `severity`: filters by `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL`.
+- `status`: filters by `OPEN`, `IN_PROGRESS`, `RESOLVED`, or `CLOSED`.
+- `projectId`: filters by project.
+
+Example:
+
+```text
+GET /api/defects/search?keyword=login&severity=HIGH&status=OPEN&projectId=1
+```
+
 ### Update Defect Status
 
 ```text
@@ -404,12 +444,35 @@ Request body:
 
 ## Dashboard Endpoints
 
+The following endpoint is implemented in Phase 6.
+
 ```text
-GET /api/v1/dashboard/summary
-GET /api/v1/dashboard/projects/{projectId}
-GET /api/v1/dashboard/test-execution-status
-GET /api/v1/dashboard/defect-status
-GET /api/v1/dashboard/recent-activity
+GET /api/dashboard/summary
+```
+
+### Dashboard Summary Response
+
+```json
+{
+  "totalProjects": 3,
+  "totalModules": 8,
+  "totalTestCases": 42,
+  "totalExecutions": 30,
+  "totalPassedExecutions": 20,
+  "totalFailedExecutions": 5,
+  "totalBlockedExecutions": 2,
+  "totalPendingExecutions": 3,
+  "totalDefects": 7,
+  "openDefects": 3,
+  "inProgressDefects": 2,
+  "resolvedDefects": 1,
+  "closedDefects": 1,
+  "passRate": 66.67,
+  "failRate": 16.67
+}
+```
+
+The `passRate` and `failRate` values are percentages based on total test executions.
 ```
 
 ## Future Documentation Format

@@ -11,6 +11,7 @@ import com.qams.entity.User;
 import com.qams.enums.DefectStatus;
 import com.qams.enums.TestPriority;
 import com.qams.enums.TestStatus;
+import com.qams.enums.DefectSeverity;
 import com.qams.exception.BadRequestException;
 import com.qams.exception.ResourceNotFoundException;
 import com.qams.repository.DefectRepository;
@@ -18,6 +19,7 @@ import com.qams.repository.ProjectRepository;
 import com.qams.repository.TestExecutionRepository;
 import com.qams.repository.UserRepository;
 import java.util.List;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +75,23 @@ public class DefectService {
 
         return defectRepository.findByProjectId(projectId)
                 .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<DefectResponse> searchDefects(
+            String keyword,
+            DefectSeverity severity,
+            DefectStatus status,
+            Long projectId
+    ) {
+        return defectRepository.findAll()
+                .stream()
+                .filter(defect -> matchesKeyword(defect, keyword))
+                .filter(defect -> severity == null || defect.getSeverity() == severity)
+                .filter(defect -> status == null || defect.getStatus() == status)
+                .filter(defect -> projectId == null || hasProjectId(defect, projectId))
                 .map(this::mapToResponse)
                 .toList();
     }
@@ -162,6 +181,25 @@ public class DefectService {
         return status != null ? status : DefectStatus.OPEN;
     }
 
+    private boolean matchesKeyword(Defect defect, String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return true;
+        }
+
+        String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
+
+        return containsIgnoreCase(defect.getTitle(), normalizedKeyword)
+                || containsIgnoreCase(defect.getDescription(), normalizedKeyword);
+    }
+
+    private boolean containsIgnoreCase(String value, String normalizedKeyword) {
+        return value != null && value.toLowerCase(Locale.ROOT).contains(normalizedKeyword);
+    }
+
+    private boolean hasProjectId(Defect defect, Long projectId) {
+        return defect.getProject() != null && defect.getProject().getId().equals(projectId);
+    }
+
     private DefectResponse mapToResponse(Defect defect) {
         TestExecution testExecution = defect.getTestExecution();
         Project project = defect.getProject();
@@ -187,4 +225,3 @@ public class DefectService {
         );
     }
 }
-

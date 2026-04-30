@@ -3,6 +3,8 @@ package com.qams.controller;
 import com.qams.dto.request.TestCaseCreateRequest;
 import com.qams.dto.request.TestCaseUpdateRequest;
 import com.qams.dto.response.TestCaseResponse;
+import com.qams.enums.TestPriority;
+import com.qams.enums.TestStatus;
 import com.qams.service.TestCaseService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,6 +41,16 @@ public class TestCaseController {
         return ResponseEntity.ok(testCaseService.getAllTestCases());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<TestCaseResponse>> searchTestCases(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) TestPriority priority,
+            @RequestParam(required = false) TestStatus status,
+            @RequestParam(required = false) Long moduleId
+    ) {
+        return ResponseEntity.ok(testCaseService.searchTestCases(keyword, priority, status, moduleId));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<TestCaseResponse> getTestCaseById(@PathVariable Long id) {
         return ResponseEntity.ok(testCaseService.getTestCaseById(id));
@@ -57,4 +70,3 @@ public class TestCaseController {
         return ResponseEntity.noContent().build();
     }
 }
-

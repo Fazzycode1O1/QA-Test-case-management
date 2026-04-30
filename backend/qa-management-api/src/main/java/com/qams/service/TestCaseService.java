@@ -6,10 +6,13 @@ import com.qams.dto.response.TestCaseResponse;
 import com.qams.entity.Module;
 import com.qams.entity.TestCase;
 import com.qams.entity.User;
+import com.qams.enums.TestPriority;
+import com.qams.enums.TestStatus;
 import com.qams.exception.ResourceNotFoundException;
 import com.qams.repository.ModuleRepository;
 import com.qams.repository.TestCaseRepository;
 import com.qams.repository.UserRepository;
+import java.util.Locale;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,6 +59,23 @@ public class TestCaseService {
         return mapToResponse(testCase);
     }
 
+    @Transactional(readOnly = true)
+    public List<TestCaseResponse> searchTestCases(
+            String keyword,
+            TestPriority priority,
+            TestStatus status,
+            Long moduleId
+    ) {
+        return testCaseRepository.findAll()
+                .stream()
+                .filter(testCase -> matchesKeyword(testCase, keyword))
+                .filter(testCase -> priority == null || testCase.getPriority() == priority)
+                .filter(testCase -> status == null || testCase.getStatus() == status)
+                .filter(testCase -> moduleId == null || hasModuleId(testCase, moduleId))
+                .map(this::mapToResponse)
+                .toList();
+    }
+
     @Transactional
     public TestCaseResponse updateTestCase(Long id, TestCaseUpdateRequest request) {
         TestCase testCase = getTestCaseEntityById(id);
@@ -96,6 +116,27 @@ public class TestCaseService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
+    private boolean matchesKeyword(TestCase testCase, String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return true;
+        }
+
+        String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
+
+        return containsIgnoreCase(testCase.getTitle(), normalizedKeyword)
+                || containsIgnoreCase(testCase.getDescription(), normalizedKeyword)
+                || containsIgnoreCase(testCase.getSteps(), normalizedKeyword)
+                || containsIgnoreCase(testCase.getExpectedResult(), normalizedKeyword);
+    }
+
+    private boolean containsIgnoreCase(String value, String normalizedKeyword) {
+        return value != null && value.toLowerCase(Locale.ROOT).contains(normalizedKeyword);
+    }
+
+    private boolean hasModuleId(TestCase testCase, Long moduleId) {
+        return testCase.getModule() != null && testCase.getModule().getId().equals(moduleId);
+    }
+
     private TestCaseResponse mapToResponse(TestCase testCase) {
         Module module = testCase.getModule();
         User createdBy = testCase.getCreatedBy();
@@ -118,4 +159,3 @@ public class TestCaseService {
         );
     }
 }
-
