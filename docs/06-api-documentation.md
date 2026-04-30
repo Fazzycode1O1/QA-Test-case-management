@@ -235,6 +235,44 @@ GET /api/test-cases/search?keyword=login&priority=HIGH&status=PENDING&moduleId=1
 }
 ```
 
+## Test Case Version Endpoints
+
+The following endpoints are implemented in Phase 8.
+
+```text
+GET /api/test-case-versions/test-case/{testCaseId}
+GET /api/test-case-versions/{id}
+```
+
+### Version History Behavior
+
+Whenever a test case is updated through `PUT /api/test-cases/{id}`, the backend automatically creates a `TestCaseVersion` record.
+
+The version snapshot stores useful old and new values, including:
+
+- `title`
+- `description`
+- `steps`
+- `expectedResult`
+- `priority`
+- `moduleId`
+- `createdByUserId`
+- updated user details when available
+
+### Test Case Version Response
+
+```json
+{
+  "id": 1,
+  "testCaseId": 1,
+  "versionNumber": 1,
+  "snapshotData": "{\"oldValues\":{\"title\":\"Old title\"},\"newValues\":{\"title\":\"New title\"}}",
+  "updatedByUserId": 2,
+  "updatedByUserName": "QA Tester",
+  "createdAt": "2026-05-01T01:20:00"
+}
+```
+
 ### Error Handling
 
 Validation errors return `400 Bad Request`.
@@ -251,6 +289,156 @@ Example error response:
   "message": "Test case not found with id: 99",
   "path": "/api/test-cases/99",
   "validationErrors": null
+}
+```
+
+## Test Suite Endpoints
+
+The following endpoints are implemented in Phase 7.
+
+```text
+POST   /api/test-suites
+GET    /api/test-suites
+GET    /api/test-suites/{id}
+GET    /api/test-suites/project/{projectId}
+PUT    /api/test-suites/{id}
+DELETE /api/test-suites/{id}
+POST   /api/test-suites/{suiteId}/test-cases/{testCaseId}
+DELETE /api/test-suites/{suiteId}/test-cases/{testCaseId}
+```
+
+### Create Test Suite
+
+```text
+POST /api/test-suites
+```
+
+Request body:
+
+```json
+{
+  "name": "Authentication Regression Suite",
+  "description": "Reusable regression tests for authentication features.",
+  "projectId": 1,
+  "testCaseIds": [1, 2, 3]
+}
+```
+
+Validation rules:
+
+- `name` is required.
+- `projectId` is required and must refer to an existing project.
+- `testCaseIds` is optional.
+
+### Update Test Suite
+
+```text
+PUT /api/test-suites/{id}
+```
+
+Uses the same request body and validation rules as create.
+
+### Manage Test Cases in a Suite
+
+```text
+POST   /api/test-suites/{suiteId}/test-cases/{testCaseId}
+DELETE /api/test-suites/{suiteId}/test-cases/{testCaseId}
+```
+
+These endpoints add or remove one test case from a test suite.
+
+### Test Suite Response
+
+```json
+{
+  "id": 1,
+  "name": "Authentication Regression Suite",
+  "description": "Reusable regression tests for authentication features.",
+  "projectId": 1,
+  "projectName": "QA Management System",
+  "testCaseIds": [1, 2, 3],
+  "totalTestCases": 3,
+  "createdAt": "2026-05-01T01:05:00",
+  "updatedAt": "2026-05-01T01:05:00"
+}
+```
+
+## Test Plan Endpoints
+
+The following endpoints are implemented in Phase 7.
+
+```text
+POST   /api/test-plans
+GET    /api/test-plans
+GET    /api/test-plans/{id}
+GET    /api/test-plans/project/{projectId}
+PUT    /api/test-plans/{id}
+DELETE /api/test-plans/{id}
+POST   /api/test-plans/{planId}/test-suites/{suiteId}
+DELETE /api/test-plans/{planId}/test-suites/{suiteId}
+```
+
+### Create Test Plan
+
+```text
+POST /api/test-plans
+```
+
+Request body:
+
+```json
+{
+  "name": "Sprint 1 Regression Plan",
+  "description": "Regression cycle for sprint 1 release.",
+  "startDate": "2026-05-01",
+  "endDate": "2026-05-07",
+  "status": "PENDING",
+  "projectId": 1,
+  "testSuiteIds": [1, 2]
+}
+```
+
+Validation rules:
+
+- `name` is required.
+- `projectId` is required and must refer to an existing project.
+- `status` is optional and defaults to `PENDING`.
+- `testSuiteIds` is optional.
+- `startDate` and `endDate` are optional.
+
+### Update Test Plan
+
+```text
+PUT /api/test-plans/{id}
+```
+
+Uses the same request body and validation rules as create.
+
+### Manage Test Suites in a Plan
+
+```text
+POST   /api/test-plans/{planId}/test-suites/{suiteId}
+DELETE /api/test-plans/{planId}/test-suites/{suiteId}
+```
+
+These endpoints add or remove one test suite from a test plan.
+
+### Test Plan Response
+
+```json
+{
+  "id": 1,
+  "name": "Sprint 1 Regression Plan",
+  "description": "Regression cycle for sprint 1 release.",
+  "startDate": "2026-05-01",
+  "endDate": "2026-05-07",
+  "status": "PENDING",
+  "projectId": 1,
+  "projectName": "QA Management System",
+  "testSuiteIds": [1, 2],
+  "totalTestSuites": 2,
+  "createdAt": "2026-05-01T01:05:00",
+  "updatedAt": "2026-05-01T01:05:00"
 }
 ```
 
@@ -442,6 +630,148 @@ Request body:
 }
 ```
 
+## Notification Endpoints
+
+The following endpoints are implemented in Phase 8.
+
+```text
+GET    /api/notifications/user/{userId}
+GET    /api/notifications/user/{userId}/unread
+PUT    /api/notifications/{id}/read
+DELETE /api/notifications/{id}
+```
+
+### Notification Behavior
+
+Notifications are created automatically when:
+
+- A test execution is marked `FAILED`.
+- A defect is created.
+
+For failed test executions, the notification is sent to the executing user when available. If no executing user is present, the notification is sent to the test case creator when available.
+
+For created defects, the notification is sent to the assigned user when available. If no assigned user is present, the notification is sent to the reporting user when available.
+
+### Notification Response
+
+```json
+{
+  "id": 1,
+  "userId": 2,
+  "userName": "QA Tester",
+  "title": "Test execution failed",
+  "message": "Test execution #5 for \"Verify login\" was marked FAILED.",
+  "read": false,
+  "createdAt": "2026-05-01T01:20:00",
+  "updatedAt": "2026-05-01T01:20:00"
+}
+```
+
+## Report Endpoints
+
+The following endpoints are implemented in Phase 9.
+
+```text
+GET /api/reports/test-cases
+GET /api/reports/test-executions
+GET /api/reports/defects
+GET /api/reports/test-cases/csv
+GET /api/reports/test-executions/csv
+GET /api/reports/defects/csv
+```
+
+The JSON report endpoints return summary counts plus useful list data. The CSV endpoints return `text/csv` with download headers.
+
+### Test Case Report
+
+```text
+GET /api/reports/test-cases
+```
+
+Includes:
+
+- total test case counts by priority
+- test case title
+- priority and status
+- module and project
+- created by user
+- created date
+
+Example response:
+
+```json
+{
+  "totalTestCases": 10,
+  "lowPriorityTestCases": 1,
+  "mediumPriorityTestCases": 4,
+  "highPriorityTestCases": 3,
+  "criticalPriorityTestCases": 2,
+  "testCases": [
+    {
+      "id": 1,
+      "title": "Verify login",
+      "priority": "HIGH",
+      "status": "PENDING",
+      "moduleId": 1,
+      "moduleName": "Authentication",
+      "projectId": 1,
+      "projectName": "QA Management System",
+      "createdByUserId": 2,
+      "createdByUserName": "QA Tester",
+      "createdAt": "2026-05-01T01:30:00"
+    }
+  ]
+}
+```
+
+CSV endpoint:
+
+```text
+GET /api/reports/test-cases/csv
+```
+
+### Test Execution Report
+
+```text
+GET /api/reports/test-executions
+```
+
+Includes:
+
+- execution counts by status
+- test case title
+- execution status
+- executed by user
+- actual result
+- execution date
+
+CSV endpoint:
+
+```text
+GET /api/reports/test-executions/csv
+```
+
+### Defect Report
+
+```text
+GET /api/reports/defects
+```
+
+Includes:
+
+- defect counts by status
+- defect title
+- severity and status
+- project
+- linked test execution
+- created date
+
+CSV endpoint:
+
+```text
+GET /api/reports/defects/csv
+```
+
 ## Dashboard Endpoints
 
 The following endpoint is implemented in Phase 6.
@@ -473,7 +803,6 @@ GET /api/dashboard/summary
 ```
 
 The `passRate` and `failRate` values are percentages based on total test executions.
-```
 
 ## Future Documentation Format
 

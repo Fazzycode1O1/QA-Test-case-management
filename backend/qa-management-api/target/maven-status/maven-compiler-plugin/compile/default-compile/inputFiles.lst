@@ -6,6 +6,7 @@ C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\NotificationController.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\package-info.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\ProjectController.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\ReportController.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\TestCaseController.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\TestCaseVersionController.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\controller\TestExecutionController.java
@@ -28,14 +29,20 @@ C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\TestSuiteCreateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\request\TestSuiteUpdateRequest.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\DashboardSummaryResponse.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\DefectReportItemResponse.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\DefectReportResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\DefectResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\ErrorResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\ModuleResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\NotificationResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\package-info.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\ProjectResponse.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\TestCaseReportItemResponse.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\TestCaseReportResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\TestCaseResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\TestCaseVersionResponse.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\TestExecutionReportItemResponse.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\TestExecutionReportResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\TestExecutionResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\TestPlanResponse.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\dto\response\TestSuiteResponse.java
@@ -79,6 +86,7 @@ C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\NotificationService.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\package-info.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\ProjectService.java
+C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\ReportService.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\TestCaseService.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\TestCaseVersionService.java
 C:\xampp\htdocs\qa-management-system\backend\qa-management-api\src\main\java\com\qams\service\TestExecutionService.java

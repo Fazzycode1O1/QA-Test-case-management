@@ -5,6 +5,8 @@ com\qams\security\package-info.class
 com\qams\service\TestSuiteService.class
 com\qams\service\DashboardService.class
 com\qams\enums\TestPriority.class
+com\qams\dto\response\DefectReportItemResponse.class
+com\qams\dto\response\TestCaseReportResponse.class
 com\qams\controller\TestCaseVersionController.class
 com\qams\controller\TestPlanController.class
 com\qams\entity\TestCase.class
@@ -25,6 +27,7 @@ com\qams\config\package-info.class
 com\qams\entity\TestExecution.class
 com\qams\service\ProjectService.class
 com\qams\dto\response\DashboardSummaryResponse.class
+com\qams\dto\response\DefectReportResponse.class
 com\qams\controller\TestExecutionController.class
 com\qams\exception\package-info.class
 com\qams\dto\response\ModuleResponse.class
@@ -36,6 +39,8 @@ com\qams\dto\request\TestPlanUpdateRequest.class
 com\qams\repository\TestPlanRepository.class
 com\qams\enums\DefectStatus.class
 com\qams\controller\NotificationController.class
+com\qams\dto\response\TestExecutionReportResponse.class
+com\qams\dto\response\TestExecutionReportItemResponse.class
 com\qams\enums\DefectSeverity.class
 com\qams\dto\request\TestExecutionCreateRequest.class
 com\qams\controller\DashboardController.class
@@ -45,6 +50,7 @@ com\qams\service\TestExecutionService.class
 com\qams\dto\response\TestSuiteResponse.class
 com\qams\dto\response\TestCaseResponse.class
 com\qams\dto\request\ProjectUpdateRequest.class
+com\qams\controller\ReportController.class
 com\qams\dto\request\package-info.class
 com\qams\dto\response\TestPlanResponse.class
 com\qams\entity\Notification.class
@@ -62,6 +68,7 @@ com\qams\dto\request\TestCaseCreateRequest.class
 com\qams\dto\request\TestCaseUpdateRequest.class
 com\qams\dto\response\NotificationResponse.class
 com\qams\dto\request\ProjectCreateRequest.class
+com\qams\dto\response\TestCaseReportItemResponse.class
 com\qams\repository\package-info.class
 com\qams\enums\UserRole.class
 com\qams\entity\package-info.class
@@ -83,5 +90,6 @@ com\qams\controller\ProjectController.class
 com\qams\entity\TestCaseVersion.class
 com\qams\repository\UserRepository.class
 com\qams\repository\TestExecutionRepository.class
+com\qams\service\ReportService.class
 com\qams\entity\Module.class
 com\qams\controller\package-info.class
