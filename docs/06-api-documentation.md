@@ -1,22 +1,30 @@
 # API Documentation
 
-## Initial API Endpoint Plan
+## API Overview
 
-The Phase 3 test case endpoints are implemented under:
+All endpoints are implemented under the `/api` root path.
 
-```text
-/api
-```
+### Authentication
 
-API responses should use consistent response structures, validation messages, and error formats.
-
-Future API versions may use a versioned path such as `/api/v1`.
-
-All endpoints except `/api/auth/**` require a JWT bearer token after Phase 10.
+All endpoints except `/api/auth/**` require a JWT bearer token.
 
 ```text
 Authorization: Bearer <token>
 ```
+
+Obtain a token by calling `POST /api/auth/login` with valid credentials. See the [Auth Endpoints](#auth-endpoints) section below.
+
+### Role-Based Access Control
+
+The API enforces role-based access control on protected endpoints. Roles are included in the JWT token and validated by Spring Security method-level annotations (`@PreAuthorize`).
+
+| Role | Permissions |
+|---|---|
+| `ADMIN` | Full access to all endpoints including project and module management |
+| `TESTER` | Can create and manage test cases, test suites, test plans, executions, and defects |
+| `DEVELOPER` | Can view defects and update defect status; can view and comment on test executions |
+
+Attempting to access an endpoint without the required role returns `403 Forbidden`.
 
 ## Auth Endpoints
 
@@ -89,12 +97,16 @@ Authorization: Bearer <jwt-token>
 The following endpoints are implemented in Phase 4.
 
 ```text
-POST   /api/projects
-GET    /api/projects
-GET    /api/projects/{id}
-PUT    /api/projects/{id}
-DELETE /api/projects/{id}
+POST   /api/projects          [ADMIN only]
+GET    /api/projects          [Authenticated]
+GET    /api/projects/{id}     [Authenticated]
+PUT    /api/projects/{id}     [ADMIN only]
+DELETE /api/projects/{id}     [ADMIN only]
 ```
+
+**Access control:**
+- Create, update, and delete: `ADMIN` role required
+- Read: Any authenticated role
 
 ### Create Project
 
@@ -209,13 +221,17 @@ Returns all modules that belong to the given project.
 The following endpoints are implemented in Phase 3.
 
 ```text
-POST   /api/test-cases
-GET    /api/test-cases
-GET    /api/test-cases/search
-GET    /api/test-cases/{id}
-PUT    /api/test-cases/{id}
-DELETE /api/test-cases/{id}
+POST   /api/test-cases         [ADMIN, TESTER]
+GET    /api/test-cases         [Authenticated]
+GET    /api/test-cases/search  [Authenticated]
+GET    /api/test-cases/{id}    [Authenticated]
+PUT    /api/test-cases/{id}    [ADMIN, TESTER]
+DELETE /api/test-cases/{id}    [ADMIN, TESTER]
 ```
+
+**Access control:**
+- Create, update, and delete: `ADMIN` or `TESTER` role required
+- Read: Any authenticated role
 
 ### Create Test Case
 
@@ -507,13 +523,17 @@ These endpoints add or remove one test suite from a test plan.
 The following endpoints are implemented in Phase 5.
 
 ```text
-POST   /api/test-executions
-GET    /api/test-executions
-GET    /api/test-executions/{id}
-GET    /api/test-executions/test-case/{testCaseId}
-PUT    /api/test-executions/{id}/status
-DELETE /api/test-executions/{id}
+POST   /api/test-executions                    [ADMIN, TESTER]
+GET    /api/test-executions                    [Authenticated]
+GET    /api/test-executions/{id}               [Authenticated]
+GET    /api/test-executions/test-case/{tcId}  [Authenticated]
+PUT    /api/test-executions/{id}/status        [ADMIN, TESTER]
+DELETE /api/test-executions/{id}               [ADMIN, TESTER]
 ```
+
+**Access control:**
+- Create, update status, and delete: `ADMIN` or `TESTER` role required
+- Read: Any authenticated role
 
 ### Create Test Execution
 

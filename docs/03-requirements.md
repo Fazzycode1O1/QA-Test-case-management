@@ -10,21 +10,22 @@
 - Users can execute assigned test cases and record pass, fail, blocked, or skipped status.
 - Users can create defects from failed test executions.
 - Developers can view and update assigned defects.
-- The system can track test case version history.
-- The system can display dashboard summaries and basic reports.
-- Users can receive notifications for important QA events.
+- The system tracks test case version history.
+- The system displays dashboard summaries and reports.
+- Users receive notifications for important QA events.
+- Users can export reports to CSV.
 
 ## Non-Functional Requirements
 
-- The backend should use Java 17 and Spring Boot.
-- The system should expose RESTful APIs.
-- Data should be stored in MySQL.
-- API requests should be validated before processing.
-- Access control should be role-based.
-- The codebase should be modular and maintainable.
-- The system should support future integration with external tools.
-- The application should provide meaningful error responses.
-- The backend should be testable with unit and API tests.
+- The backend uses Java 17 and Spring Boot.
+- The system exposes RESTful APIs.
+- Data is stored in MySQL.
+- API requests are validated before processing.
+- Access control is role-based.
+- The codebase is modular and maintainable.
+- The system supports future integration with external tools.
+- The application provides meaningful error responses.
+- The backend is testable with unit and API tests.
 
 ## User Roles
 
@@ -45,5 +46,4 @@
 - Test case versioning
 - Notifications
 - Dashboard summaries
-- Reporting exports in a future phase
-
+- Reporting with CSV export
