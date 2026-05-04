@@ -17,15 +17,14 @@ qa-management-system/
 
 ## Quick Start
 
-### 1. Start MySQL
+### 1. Set up Supabase Database
 
-Start MySQL Server. If using XAMPP, start MySQL from the XAMPP Control Panel.
+Create a new Supabase project at [supabase.com](https://supabase.com).
 
-Create the database if it does not exist:
-
-```sql
-CREATE DATABASE qa_management_db;
-```
+From your Supabase dashboard:
+- Go to Settings > Database
+- Copy the connection string (use the "Session mode" pooler for compatibility)
+- Update the `.env` file in `backend/qa-management-api/` with your Supabase credentials
 
 ### 2. Start the Backend
 
@@ -74,7 +73,7 @@ Spring Boot REST API located at `backend/qa-management-api`.
 | Spring Data JPA | Persistence layer |
 | Spring Security | Authentication and authorization |
 | JWT (custom HMAC-SHA256) | Stateless bearer-token auth |
-| MySQL | Database |
+| Supabase | Database |
 | Bean Validation | Request validation |
 | Lombok | Boilerplate reduction |
 | DevTools | Hot reload |
@@ -83,7 +82,11 @@ Spring Boot REST API located at `backend/qa-management-api`.
 
 ```properties
 server.port=8080
-spring.datasource.url=jdbc:mysql://localhost:3306/qa_management_db
+spring.datasource.url=${SUPABASE_DB_URL}
+spring.datasource.username=${SUPABASE_DB_USERNAME}
+spring.datasource.password=${SUPABASE_DB_PASSWORD}
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 security.jwt.secret=${QAMS_JWT_SECRET:dev-secret-key-change-in-production}
 security.jwt.expiration-ms=${QAMS_JWT_EXPIRATION_MS:86400000}
 ```

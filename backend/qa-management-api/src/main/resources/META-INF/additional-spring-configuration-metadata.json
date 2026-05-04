@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "app.cors.allowed-origin",
+      "type": "java.lang.String",
+      "description": "Allowed CORS origin for the frontend (e.g. http://localhost:5173). Set via CORS_ALLOWED_ORIGIN env var."
+    },
+    {
+      "name": "security.jwt.secret",
+      "type": "java.lang.String",
+      "description": "HMAC-SHA256 secret key used to sign and verify JWT tokens. Set via QAMS_JWT_SECRET env var."
+    },
+    {
+      "name": "security.jwt.expiration-ms",
+      "type": "java.lang.Long",
+      "description": "JWT token lifetime in milliseconds. Default 86400000 (24 h). Set via QAMS_JWT_EXPIRATION_MS env var."
+    }
+  ]
+}

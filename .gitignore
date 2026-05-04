@@ -1,0 +1,16 @@
+# Environment files — never commit real credentials
+.env
+.env.local
+.env.*.local
+
+# Maven build output
+backend/qa-management-api/target/
+
+# Node modules
+frontend/qa-management-ui/node_modules/
+frontend/qa-management-ui/dist/
+
+# IDE
+.idea/
+*.iml
+.vscode/
